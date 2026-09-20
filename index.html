@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>برای نسرین</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+
+  /* ===========================================================
+     ریشه‌ها و متغیرها — رنگ‌ها، فونت‌ها، فاصله‌ها
+  =========================================================== */
+  :root{
+    --white:#fff9fb;
+    --pink-pale:#ffe1ec;
+    --pink-soft:#ffc2d9;
+    --rose:#ff7aa8;
+    --rose-deep:#ef5789;
+    --crimson:#d6244f;
+    --crimson-deep:#a91743;
+    --ink:#4a1128;
+    --ink-soft:#7a3550;
+    --deep-bg:#28081a;
+    --deep-bg-2:#3d0f28;
+    --glass:rgba(255,255,255,0.45);
+    --glass-border:rgba(255,255,255,0.65);
+    --font: 'Vazirmatn', sans-serif;
+    --font-script: 'Great Vibes', cursive;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  html,body{
+    margin:0; padding:0;
+    width:100%; max-width:100%;
+    overflow-x:hidden;
+    background:var(--white);
+    color:var(--ink);
+    font-family:var(--font);
+  }
+  body{ position:relative; }
+  h1,h2,h3,p{ margin:0; }
+  button{ font-family:var(--font); border:none; cursor:pointer; background:none; }
+  ::selection{ background:var(--pink-soft); color:var(--crimson-deep); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  :focus-visible{ outline:2px solid var(--crimson); outline-offset:3px; border-radius:6px; }
+
+  /* ===========================================================
+     ذرات قلب شناور در پس‌زمینه (سیستم پارتیکل)
+  =========================================================== */
+  .heart-field{
+    position:fixed; inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+  }
+  .p-heart{
+    position:absolute;
+    bottom:-40px;
+    opacity:0;
+    animation-name:float-up;
+    animation-timing-function:ease-in;
+    animation-fill-mode:forwards;
+    color:var(--rose);
+    filter:drop-shadow(0 0 6px rgba(255,122,168,0.55));
+  }
+  @keyframes float-up{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg) scale(var(--s,1)); opacity:0; }
+    10%{ opacity:var(--o,0.55); }
+    85%{ opacity:var(--o,0.55); }
+    100%{ transform:translateY(-115vh) translateX(var(--drift,20px)) rotate(var(--rot,15deg)) scale(var(--s,1)); opacity:0; }
+  }
+
+  /* شکل قلب با CSS خالص، برای قلب‌های اصلی و بزرگ
+     دو مربع با گوشه‌های بالا گرد، هرکدام حول نقطه‌ی پایین-وسطِ قلب
+     (که محل تلاقی دو لُب است) چرخانده می‌شوند. */
+  .heart-shape{ position:relative; display:inline-block; }
+  .heart-shape::before,
+  .heart-shape::after{
+    content:"";
+    position:absolute;
+    top:0;
+    width:50%; height:88.9%;
+    background:var(--heart-color, var(--crimson));
+    border-radius:50% 50% 0 0;
+  }
+  .heart-shape::before{
+    left:50%;
+    transform-origin:0 100%;
+    transform:rotate(-45deg);
+  }
+  .heart-shape::after{
+    left:0;
+    transform-origin:100% 100%;
+    transform:rotate(45deg);
+  }
+
+  /* ===========================================================
+     صفحهٔ ورود — Intro
+  =========================================================== */
+  #intro{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:6vh 6vw;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,194,217,0.9), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(255,122,168,0.55), transparent 55%),
+      linear-gradient(160deg, #fff3f7 0%, #ffe1ec 45%, #ffc7dc 100%);
+    z-index:2;
+    transition:opacity 1.1s ease, visibility 1.1s ease, transform 1.1s ease;
+  }
+  #intro.hide{
+    opacity:0;
+    visibility:hidden;
+    transform:scale(1.04);
+    position:fixed;
+    inset:0;
+  }
+  .intro-heart-wrap{
+    width:min(46vw, 190px);
+    height:calc(min(46vw, 190px) * 0.9);
+    margin-bottom:2.4rem;
+    animation:pulse-heart 2.4s ease-in-out infinite;
+  }
+  .intro-heart-wrap .heart-shape{
+    width:100%; height:100%;
+    --heart-color: linear-gradient(160deg, var(--rose), var(--crimson));
+    filter:drop-shadow(0 0 28px rgba(214,36,79,0.45));
+  }
+  .intro-heart-wrap .heart-shape::before,
+  .intro-heart-wrap .heart-shape::after{
+    background:linear-gradient(160deg, var(--rose), var(--crimson-deep));
+  }
+  @keyframes pulse-heart{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.07); }
+  }
+  .intro-title{
+    font-size:clamp(1.6rem, 6vw, 2.6rem);
+    font-weight:800;
+    letter-spacing:0.02em;
+    color:var(--crimson-deep);
+    text-shadow:0 2px 18px rgba(214,36,79,0.25);
+    direction:ltr;
+  }
+  .intro-sub{
+    margin-top:0.9rem;
+    font-size:clamp(0.85rem, 2.6vw, 1rem);
+    color:var(--ink-soft);
+    font-weight:400;
+    letter-spacing:0.03em;
+  }
+  .enter-btn{
+    margin-top:2.6rem;
+    padding:0.95rem 2.6rem;
+    font-size:0.95rem;
+    font-weight:600;
+    color:#fff;
+    border-radius:999px;
+    background:linear-gradient(120deg, var(--rose), var(--crimson));
+    box-shadow:0 10px 30px rgba(214,36,79,0.35);
+    transition:transform 0.35s ease, box-shadow 0.35s ease;
+    letter-spacing:0.02em;
+  }
+  .enter-btn:hover, .enter-btn:focus-visible{
+    transform:translateY(-3px);
+    box-shadow:0 16px 36px rgba(214,36,79,0.45);
+  }
+  .enter-btn:active{ transform:translateY(0) scale(0.98); }
+
+  /* ===========================================================
+     محتوای اصلی سایت
+  =========================================================== */
+  #site{
+    position:relative;
+    z-index:2;
+    opacity:0;
+    transition:opacity 0.9s ease 0.2s;
+  }
+  #site.show{ opacity:1; }
+
+  /* --- نوار ناوبری --- */
+  header.nav{
+    position:fixed;
+    top:0; right:0; left:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0.9rem 5vw;
+    background:rgba(255,251,252,0.7);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,122,168,0.18);
+    transition:transform 0.4s ease;
+  }
+  .nav-brand{
+    font-family:var(--font-script);
+    font-size:1.7rem;
+    color:var(--crimson);
+  }
+  .nav-links{
+    display:flex;
+    gap:1.6rem;
+    list-style:none;
+    margin:0; padding:0;
+  }
+  .nav-links button{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    font-weight:500;
+    padding:0.3rem 0.1rem;
+    position:relative;
+    transition:color 0.3s ease;
+  }
+  .nav-links button::after{
+    content:"";
+    position:absolute;
+    right:0; bottom:-4px;
+    width:0%; height:2px;
+    background:var(--crimson);
+    transition:width 0.3s ease;
+  }
+  .nav-links button:hover, .nav-links button:focus-visible{ color:var(--crimson); }
+  .nav-links button:hover::after, .nav-links button:focus-visible::after{ width:100%; }
+
+  .nav-toggle{
+    display:none;
+    width:38px; height:38px;
+    border-radius:12px;
+    background:rgba(255,194,217,0.5);
+    position:relative;
+  }
+  .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after{
+    content:"";
+    position:absolute;
+    right:9px; left:9px;
+    height:2px;
+    background:var(--crimson-deep);
+    transition:transform 0.3s ease, opacity 0.3s ease, top 0.3s ease;
+  }
+  .nav-toggle span{ top:18px; }
+  .nav-toggle span::before{ top:-8px; }
+  .nav-toggle span::after{ top:8px; }
+  .nav-toggle.open span{ background:transparent; }
+  .nav-toggle.open span::before{ top:0; transform:rotate(45deg); }
+  .nav-toggle.open span::after{ top:0; transform:rotate(-45deg); }
+
+  .nav-drawer{
+    display:none;
+    position:fixed;
+    top:60px; right:0; left:0;
+    z-index:49;
+    background:rgba(255,251,252,0.97);
+    backdrop-filter:blur(16px);
+    flex-direction:column;
+    padding:1rem 6vw 1.6rem;
+    gap:0.4rem;
+    transform:translateY(-12px);
+    opacity:0;
+    pointer-events:none;
+    transition:transform 0.35s ease, opacity 0.35s ease;
+    border-bottom:1px solid rgba(255,122,168,0.18);
+  }
+  .nav-drawer.open{
+    transform:translateY(0);
+    opacity:1;
+    pointer-events:auto;
+  }
+  .nav-drawer button{
+    text-align:right;
+    padding:0.85rem 0.4rem;
+    font-size:1rem;
+    color:var(--ink-soft);
+    border-bottom:1px solid rgba(214,36,79,0.08);
+  }
+
+  @media (max-width:760px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+    .nav-drawer{ display:flex; }
+  }
+
+  /* --- بخش‌های عمومی --- */
+  section{
+    position:relative;
+    padding:7rem 6vw 5rem;
+    max-width:920px;
+    margin:0 auto;
+  }
+  .reveal{
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .eyebrow-heart{
+    font-size:1.4rem;
+    color:var(--rose);
+    display:block;
+    margin-bottom:0.6rem;
+  }
+  .section-title{
+    font-size:clamp(1.7rem, 5vw, 2.6rem);
+    font-weight:800;
+    color:var(--crimson-deep);
+    line-height:1.35;
+  }
+  .section-lead{
+    margin-top:1rem;
+    font-size:clamp(1rem, 2.6vw, 1.15rem);
+    color:var(--ink-soft);
+    line-height:1.9;
+    max-width:60ch;
+  }
+
+  /* --- Section 1: برای تو (Hero) --- */
+  #section1{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding-top:6rem;
+    max-width:100%;
+  }
+  #section1::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 50% 15%, rgba(255,194,217,0.55), transparent 60%),
+      radial-gradient(circle at 15% 85%, rgba(255,122,168,0.28), transparent 55%);
+    z-index:-1;
+  }
+  .hero-name{
+    font-family:var(--font-script);
+    font-size:clamp(2.6rem, 9vw, 4.4rem);
+    color:var(--crimson);
+    line-height:1.2;
+  }
+  .hero-title{
+    margin-top:0.6rem;
+    font-size:clamp(1.5rem, 4.4vw, 2.1rem);
+    font-weight:700;
+    color:var(--ink);
+  }
+  .hero-note{
+    margin-top:1.3rem;
+    color:var(--ink-soft);
+    font-size:1rem;
+    max-width:44ch;
+    line-height:1.9;
+  }
+  .scroll-hint{
+    margin-top:3.4rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.5rem;
+    color:var(--rose-deep);
+    font-size:0.85rem;
+  }
+  .scroll-hint .arrow{
+    width:10px; height:10px;
+    border-left:2px solid var(--rose-deep);
+    border-bottom:2px solid var(--rose-deep);
+    transform:rotate(-45deg);
+    animation:bounce-down 1.6s ease-in-out infinite;
+  }
+  @keyframes bounce-down{
+    0%,100%{ transform:translateY(0) rotate(-45deg); }
+    50%{ transform:translateY(6px) rotate(-45deg); }
+  }
+
+  /* --- Section 2: حرف دلم --- */
+  .glass-card{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-radius:28px;
+    padding:2.4rem 1.8rem;
+    box-shadow:0 22px 50px rgba(214,36,79,0.14);
+  }
+  @media(min-width:600px){ .glass-card{ padding:3rem 3.2rem; } }
+  .letter-intro{
+    text-align:center;
+    color:var(--crimson-deep);
+    font-weight:600;
+    font-size:1.05rem;
+    margin-bottom:1.6rem;
+  }
+  .letter-body p{
+    color:var(--ink);
+    line-height:2.1;
+    font-size:1.02rem;
+    margin-bottom:1.1rem;
+  }
+  .letter-body p:last-child{ margin-bottom:0; }
+
+  /* --- Section 3: چرا تو؟ --- */
+  .reason-grid{
+    margin-top:2.2rem;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1rem;
+  }
+  @media(min-width:640px){ .reason-grid{ grid-template-columns:1fr 1fr; } }
+  .reason-card{
+    background:linear-gradient(150deg, rgba(255,255,255,0.85), rgba(255,225,236,0.65));
+    border:1px solid rgba(255,122,168,0.25);
+    border-radius:20px;
+    padding:1.3rem 1.4rem;
+    display:flex;
+    align-items:flex-start;
+    gap:0.8rem;
+    color:var(--ink);
+    font-size:0.98rem;
+    line-height:1.8;
+    box-shadow:0 10px 24px rgba(214,36,79,0.08);
+  }
+  .reason-card .mini-heart{ color:var(--rose); font-size:1.1rem; flex-shrink:0; margin-top:0.1rem; }
+
+  /* --- Section 4: قلب مخفی --- */
+  #section4{ text-align:center; }
+  .touch-wrap{
+    margin:2.6rem auto 0;
+    position:relative;
+    width:min(60vw, 220px);
+    height:calc(min(60vw, 220px) * 0.9);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .touch-heart-btn{
+    position:relative;
+    width:70%; height:70%;
+    transition:transform 0.45s cubic-bezier(.2,.9,.3,1.3);
+  }
+  .touch-heart-btn .heart-shape{
+    width:100%; height:100%;
+    filter:drop-shadow(0 0 20px rgba(214,36,79,0.35));
+  }
+  .touch-heart-btn .heart-shape::before,
+  .touch-heart-btn .heart-shape::after{
+    background:linear-gradient(160deg, var(--rose), var(--crimson));
+  }
+  .touch-heart-btn span.label{
+    position:absolute;
+    bottom:8%;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    color:#fff;
+    direction:ltr;
+    text-shadow:0 1px 4px rgba(0,0,0,0.2);
+  }
+  .touch-heart-btn.burst{ transform:scale(1.18); }
+  .touch-glow{
+    position:absolute;
+    inset:-40%;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,122,168,0.45), transparent 70%);
+    opacity:0;
+    transition:opacity 0.5s ease;
+    pointer-events:none;
+  }
+  .touch-glow.show{ opacity:1; }
+  .mini-burst-heart{
+    position:absolute;
+    top:50%; left:50%;
+    font-size:1rem;
+    color:var(--rose-deep);
+    opacity:0;
+    pointer-events:none;
+  }
+  .mini-burst-heart.go{
+    animation:burst-out 1s ease-out forwards;
+  }
+  @keyframes burst-out{
+    0%{ opacity:1; transform:translate(-50%,-50%) scale(0.6); }
+    100%{ opacity:0; transform:translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1.1); }
+  }
+  .love-line{
+    margin-top:2.2rem;
+    min-height:2.4rem;
+    font-size:1.15rem;
+    color:var(--crimson-deep);
+    font-weight:600;
+    opacity:0;
+    transition:opacity 0.5s ease, transform 0.5s ease;
+    transform:translateY(8px);
+  }
+  .love-line.show{ opacity:1; transform:translateY(0); }
+
+  /* --- Section 5: بازی پیدا کردن قلب --- */
+  #section5{ text-align:center; }
+  .game-grid{
+    margin:2.4rem auto 0;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1.1rem;
+    max-width:360px;
+  }
+  .game-cell{
+    aspect-ratio:1;
+    border-radius:18px;
+    background:linear-gradient(150deg, #fff, var(--pink-pale));
+    border:1px solid rgba(255,122,168,0.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.6rem;
+    color:var(--pink-soft);
+    box-shadow:0 8px 18px rgba(214,36,79,0.1);
+    transition:transform 0.25s ease, background 0.3s ease, color 0.3s ease;
+  }
+  .game-cell:hover, .game-cell:focus-visible{ transform:translateY(-3px); }
+  .game-cell.wrong{ animation:shake 0.4s ease; }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-6px); }
+    75%{ transform:translateX(6px); }
+  }
+  .game-cell.correct{
+    background:linear-gradient(150deg, var(--rose), var(--crimson));
+    color:#fff;
+    transform:scale(1.08);
+  }
+  .game-msg{
+    margin-top:1.6rem;
+    min-height:2.6rem;
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    font-weight:500;
+    white-space:pre-line;
+  }
+  .game-msg.win{ color:var(--crimson-deep); font-weight:700; }
+
+  /* --- Section 6: چیزهایی که نمیشه شمرد --- */
+  .count-grid{
+    margin-top:2.4rem;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1.6rem;
+  }
+  @media(min-width:600px){ .count-grid{ grid-template-columns:1fr 1fr; } }
+  .count-item{
+    text-align:center;
+    padding:1.8rem 1rem;
+    border-radius:22px;
+    background:linear-gradient(160deg, rgba(255,255,255,0.9), rgba(255,209,229,0.5));
+    border:1px solid rgba(255,122,168,0.2);
+  }
+  .count-number{
+    font-size:2.6rem;
+    font-weight:800;
+    color:var(--crimson);
+    display:block;
+    opacity:0;
+    transform:scale(0.6);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .count-number.in{ opacity:1; transform:scale(1); }
+  .count-label{
+    margin-top:0.5rem;
+    color:var(--ink-soft);
+    font-size:0.95rem;
+  }
+  .count-item.wide{ grid-column:1 / -1; }
+  .count-item.wide .count-number{ font-size:1.5rem; }
+
+  /* --- Section 7: نامه مخفی --- */
+  #section7{ text-align:center; }
+  .envelope-wrap{
+    margin:2.6rem auto 0;
+    width:min(80vw, 300px);
+    perspective:1200px;
+  }
+  .envelope{
+    position:relative;
+    width:100%;
+    aspect-ratio:1.5/1;
+    cursor:pointer;
+  }
+  .env-back{
+    position:absolute; inset:0;
+    background:linear-gradient(160deg, #ffd7e7, #ffb6d0);
+    border-radius:14px;
+    box-shadow:0 18px 36px rgba(214,36,79,0.2);
+    overflow:hidden;
+  }
+  .env-letter{
+    position:absolute;
+    left:6%; right:6%; top:8%;
+    height:84%;
+    background:#fffaf9;
+    border-radius:8px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.1);
+    transform:translateY(0%);
+    transition:transform 0.8s cubic-bezier(.2,.8,.2,1);
+    z-index:1;
+    padding:1rem 0.9rem;
+    overflow:hidden;
+    text-align:right;
+  }
+  .envelope.open .env-letter{ transform:translateY(-62%); z-index:3; }
+  .env-letter-title{
+    font-size:0.85rem;
+    font-weight:700;
+    color:var(--crimson-deep);
+    margin-bottom:0.5rem;
+  }
+  .env-letter-body{
+    font-size:0.72rem;
+    line-height:1.8;
+    color:var(--ink-soft);
+  }
+  .env-letter-sign{
+    margin-top:0.6rem;
+    font-family:var(--font-script);
+    font-size:1.1rem;
+    color:var(--crimson);
+  }
+  .env-flap{
+    position:absolute;
+    top:0; left:0; right:0;
+    height:52%;
+    background:linear-gradient(160deg, #ff9dbf, var(--rose-deep));
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top;
+    transition:transform 0.6s ease;
+    z-index:2;
+  }
+  .envelope.open .env-flap{ transform:rotateX(180deg); z-index:0; }
+  .env-front{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    height:60%;
+    background:linear-gradient(180deg, var(--rose-deep), var(--crimson));
+    clip-path:polygon(0 100%, 0 15%, 50% 55%, 100% 15%, 100% 100%);
+    z-index:1;
+  }
+  .env-label{
+    position:absolute;
+    bottom:14%; left:50%;
+    transform:translateX(-50%);
+    color:#fff;
+    font-size:0.75rem;
+    letter-spacing:0.15em;
+    direction:ltr;
+    z-index:2;
+  }
+  .envelope.open .env-label{ opacity:0; }
+  .full-letter{
+    margin-top:2.6rem;
+    max-width:520px;
+    margin-inline:auto;
+    text-align:right;
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(14px);
+    border-radius:22px;
+    padding:1.8rem 1.6rem;
+    opacity:0;
+    max-height:0;
+    overflow:hidden;
+    transition:opacity 0.6s ease, max-height 0.9s ease, padding 0.6s ease, margin 0.6s ease;
+  }
+  .full-letter.show{
+    opacity:1;
+    max-height:600px;
+    padding:1.8rem 1.6rem;
+  }
+  .full-letter h3{ color:var(--crimson-deep); font-size:1.05rem; margin-bottom:0.8rem; }
+  .full-letter p{ color:var(--ink); line-height:2; font-size:0.98rem; }
+  .full-letter .sign{
+    margin-top:1rem;
+    font-family:var(--font-script);
+    font-size:1.5rem;
+    color:var(--crimson);
+    text-align:left;
+  }
+
+  /* --- Section 8: پایان --- */
+  #section8{
+    max-width:100%;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(255,122,168,0.18), transparent 60%),
+      linear-gradient(180deg, var(--deep-bg) 0%, var(--deep-bg-2) 100%);
+    padding:6rem 6vw;
+  }
+  .end-line1{
+    font-size:clamp(1.1rem, 3.4vw, 1.4rem);
+    color:#ffd3e2;
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  .end-line1.in{ opacity:1; }
+  .end-line2{
+    margin-top:1.4rem;
+    font-size:clamp(2.4rem, 9vw, 4rem);
+    font-weight:800;
+    letter-spacing:0.04em;
+    direction:ltr;
+    background:linear-gradient(120deg, #ff9dbf, #ff5f92, #ffd3e2);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    opacity:0;
+    transform:scale(0.85);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+  .end-line2.in{ opacity:1; transform:scale(1); }
+  .end-line3{
+    margin-top:1rem;
+    font-size:clamp(0.95rem, 2.6vw, 1.15rem);
+    color:#ffb8cf;
+    direction:ltr;
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  .end-line3.in{ opacity:1; }
+  .end-heart{
+    margin-top:2.6rem;
+    width:46px; height:41px;
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  .end-heart.in{ opacity:1; animation:pulse-heart 2.2s ease-in-out infinite; }
+  .end-heart .heart-shape{ width:100%; height:100%; }
+  .end-heart .heart-shape::before,
+  .end-heart .heart-shape::after{ background:linear-gradient(160deg, var(--rose), #ffd3e2); }
+
+  footer{
+    text-align:center;
+    padding:1.6rem;
+    font-size:0.75rem;
+    color:#c98aa4;
+    background:var(--deep-bg);
+    direction:ltr;
+  }
+</style>
+</head>
+<body>
+
+<!-- سیستم قلب‌های شناور در پس‌زمینه، در تمام صفحه -->
+<div class="heart-field" id="heartField" aria-hidden="true"></div>
+
+<!-- ===========================================================
+     صفحه ورود
+=========================================================== -->
+<div id="intro">
+  <div class="intro-heart-wrap"><div class="heart-shape"></div></div>
+  <h1 class="intro-title">I LOVE YOU N</h1>
+  <p class="intro-sub">made with all my heart</p>
+  <button class="enter-btn" id="enterBtn">ENTER MY HEART</button>
+</div>
+
+<!-- ===========================================================
+     سایت اصلی
+=========================================================== -->
+<div id="site">
+
+  <header class="nav">
+    <span class="nav-brand">N</span>
+    <nav>
+      <ul class="nav-links">
+        <li><button data-target="section1">برای تو</button></li>
+        <li><button data-target="section2">حرف دلم</button></li>
+        <li><button data-target="section3">چرا تو؟</button></li>
+        <li><button data-target="section4">یه چیز کوچیک</button></li>
+        <li><button data-target="section8">پایان</button></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="باز کردن منو" aria-expanded="false">
+      <span></span>
+    </button>
+  </header>
+
+  <div class="nav-drawer" id="navDrawer">
+    <button data-target="section1">برای تو</button>
+    <button data-target="section2">حرف دلم</button>
+    <button data-target="section3">چرا تو؟</button>
+    <button data-target="section4">یه چیز کوچیک</button>
+    <button data-target="section8">پایان</button>
+  </div>
+
+  <!-- Section 1 — برای تو -->
+  <section id="section1">
+    <p class="hero-name reveal">برای نسرینم</p>
+    <h2 class="hero-title reveal">برای قشنگ‌ترین آدمی که وارد زندگی من شد</h2>
+    <p class="hero-note reveal">این سایت فقط چندتا کد نیست، یه تیکه کوچیک از حرفای دل منه.</p>
+    <div class="scroll-hint reveal">
+      <span>برو پایین‌تر</span>
+      <span class="arrow"></span>
+    </div>
+  </section>
+
+  <!-- Section 2 — حرف دلم -->
+  <section id="section2">
+    <div class="glass-card reveal">
+      <p class="letter-intro">یه چیزی هست که باید بدونی...</p>
+      <div class="letter-body">
+        <p>ببخشید واقعاً، من دیوونه‌تم.</p>
+        <p>واقعاً حسودی می‌کنم به همه‌ی کسایی که کنارتون هستن؛ به هر کی که بیشتر از من می‌تونه ببینتتون، باهاتون حرف بزنه و کنارتون باشه.</p>
+        <p>من می‌میرم برای شما. واقعاً جونمو می‌دم براتون. نفس منید. قربونِ دلِ مهربونتون برم، سبز زمردیِ کوچولوی من.</p>
+        <p>شما برای من یه آدم معمولی نیستید؛ شما قشنگ‌ترین و عزیزترین آدمِ زندگی منید.</p>
+        <p>هرچی بیشتر می‌شناسمتون، بیشتر عاشقتون می‌شم. قربونتون برم. خیلی، یه پیام یا یه حرفتون روی حال من تأثیر داره. با ناراحتیتون منم ناراحت می‌شم؛ ایشالا هیچ‌وقت ناراحت نباشی. با خوشحالیتون منم ذوق می‌کنم.</p>
+        <p>اگه یه وقت‌هایی حسودی می‌کنم، یا زیادی مثل الان حرف می‌زنم، واسه اینه که خیلی برام مهمید و دلم نمی‌خواد حتی یه لحظه ازم دور باشید.</p>
+        <p>خلاصه که من واقعاً دیوونه‌ی شما شدم. قربونتون برم که این‌قدر دوست‌داشتنی و قشنگید. دوستتون دارم، خیلی بیشتر از چیزی که فکر می‌کنید.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 — چرا تو؟ -->
+  <section id="section3">
+    <h2 class="section-title reveal">چرا تو؟</h2>
+    <div class="reason-grid">
+      <div class="reason-card reveal"><span class="mini-heart">♡</span><span>چون با بودنت دلم آروم می‌شه</span></div>
+      <div class="reason-card reveal"><span class="mini-heart">♡</span><span>چون حتی یه پیام کوچیکت می‌تونه کل حالمو عوض کنه</span></div>
+      <div class="reason-card reveal"><span class="mini-heart">♡</span><span>چون خوشحالیت منو خوشحال می‌کنه</span></div>
+      <div class="reason-card reveal"><span class="mini-heart">♡</span><span>چون تو برای من یه آدم معمولی نیستی</span></div>
+      <div class="reason-card reveal"><span class="mini-heart">♡</span><span>چون هرچی بیشتر می‌شناسمت بیشتر دوستت دارم</span></div>
+      <div class="reason-card reveal"><span class="mini-heart">♡</span><span>چون خودِ خودتی</span></div>
+    </div>
+  </section>
+
+  <!-- Section 4 — قلب مخفی -->
+  <section id="section4">
+    <h2 class="section-title reveal">لمسش کن</h2>
+    <p class="section-lead reveal" style="margin-inline:auto;">یه بار روی قلب بزن، ببین چی می‌گه.</p>
+    <div class="touch-wrap reveal">
+      <div class="touch-glow" id="touchGlow"></div>
+      <button class="touch-heart-btn" id="touchHeart" aria-label="لمس قلب">
+        <div class="heart-shape"></div>
+        <span class="label">touch my heart</span>
+      </button>
+    </div>
+    <p class="love-line" id="loveLine"></p>
+  </section>
+
+  <!-- Section 5 — بازی کوچیک -->
+  <section id="section5">
+    <h2 class="section-title reveal">یه امتحان کوچیک</h2>
+    <p class="section-lead reveal" style="margin-inline:auto;">ببین می‌تونی قلبمو پیدا کنی؟</p>
+    <div class="game-grid reveal" id="gameGrid"></div>
+    <p class="game-msg" id="gameMsg"></p>
+  </section>
+
+  <!-- Section 6 — چیزهایی که نمیشه شمرد -->
+  <section id="section6">
+    <h2 class="section-title reveal">چیزهایی که نمی‌شه شمرد</h2>
+    <div class="count-grid">
+      <div class="count-item reveal">
+        <span class="count-number" data-value="∞">0</span>
+        <p class="count-label">دلیل برای دوست داشتنت</p>
+      </div>
+      <div class="count-item reveal">
+        <span class="count-number" data-value="∞">0</span>
+        <p class="count-label">دفعاتی که بهت فکر کردم</p>
+      </div>
+      <div class="count-item reveal">
+        <span class="count-number" data-value="∞">0</span>
+        <p class="count-label">لحظه‌هایی که دلم خواسته بغلت کنم</p>
+      </div>
+      <div class="count-item wide reveal">
+        <span class="count-number" data-value="بیشتر از چیزی که بشه اندازه گرفت">0</span>
+        <p class="count-label">مقدار دوست داشتنت</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7 — نامه مخفی -->
+  <section id="section7">
+    <h2 class="section-title reveal">یه نامه‌ی کوچیک</h2>
+    <p class="section-lead reveal" style="margin-inline:auto;">پاکتو باز کن.</p>
+    <div class="envelope-wrap reveal">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="باز کردن نامه">
+        <div class="env-back"></div>
+        <div class="env-letter">
+          <p class="env-letter-title">برای تو، نسرین</p>
+          <p class="env-letter-body">نمی‌دونم این همه حرف رو چه‌جوری می‌شه توی چندتا جمله جا داد...</p>
+          <p class="env-letter-sign">N</p>
+        </div>
+        <div class="env-flap"></div>
+        <div class="env-front"></div>
+        <span class="env-label">OPEN ME</span>
+      </div>
+    </div>
+    <div class="full-letter" id="fullLetter">
+      <h3>برای تو، نسرین</h3>
+      <p>نمی‌دونم این همه حرف رو چه‌جوری می‌شه توی چندتا جمله جا داد. فقط می‌دونم که تو برای من خیلی بیشتر از چیزی هستی که بتونم با کلمه توضیح بدم. و شاید این سایت کوچیک فقط یه راهه برای این‌که یه ذره از چیزی که توی قلبمه رو نشونت بدم.</p>
+      <p class="sign">با تمام قلبم، N</p>
+    </div>
+  </section>
+
+  <!-- Section 8 — پایان -->
+  <section id="section8">
+    <p class="end-line1" id="endLine1">و اگه هنوز نفهمیدی...</p>
+    <h2 class="end-line2" id="endLine2">I LOVE YOU</h2>
+    <p class="end-line3" id="endLine3">N, more than words can say.</p>
+    <div class="end-heart" id="endHeart"><div class="heart-shape"></div></div>
+  </section>
+
+  <footer>made with ♡ for N</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* -------------------------------------------------------
+     ۱) سیستم ذرات قلب شناور در پس‌زمینه
+  ------------------------------------------------------- */
+  var field = document.getElementById('heartField');
+  var glyphs = ['❤','♡'];
+  function spawnParticle(){
+    var el = document.createElement('span');
+    el.className = 'p-heart';
+    el.textContent = glyphs[Math.random() < 0.5 ? 0 : 1];
+    var size = 10 + Math.random() * 18;
+    var left = Math.random() * 100;
+    var duration = 9 + Math.random() * 9;
+    var drift = (Math.random() * 80 - 40) + 'px';
+    var rot = (Math.random() * 40 - 20) + 'deg';
+    var opacity = 0.25 + Math.random() * 0.35;
+    el.style.left = left + 'vw';
+    el.style.fontSize = size + 'px';
+    el.style.setProperty('--drift', drift);
+    el.style.setProperty('--rot', rot);
+    el.style.setProperty('--o', opacity);
+    el.style.animationDuration = duration + 's';
+    field.appendChild(el);
+    setTimeout(function(){ el.remove(); }, duration * 1000 + 200);
+  }
+  // چگالی ذرات ملایم نگه داشته می‌شود تا روی موبایل لگ ایجاد نکند
+  for (var i = 0; i < 6; i++){ setTimeout(spawnParticle, i * 700); }
+  setInterval(spawnParticle, 1500);
+
+  /* -------------------------------------------------------
+     ۲) صفحه ورود
+  ------------------------------------------------------- */
+  var intro = document.getElementById('intro');
+  var site = document.getElementById('site');
+  document.getElementById('enterBtn').addEventListener('click', function(){
+    intro.classList.add('hide');
+    site.classList.add('show');
+    document.body.style.overflow = 'auto';
+    setTimeout(function(){ intro.style.display = 'none'; }, 1200);
+  });
+
+  /* -------------------------------------------------------
+     ۳) ناوبری + اسکرول نرم + منوی موبایل
+  ------------------------------------------------------- */
+  function scrollToTarget(id){
+    var target = document.getElementById(id);
+    if (!target) return;
+    var offset = 70;
+    var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  document.querySelectorAll('[data-target]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      scrollToTarget(btn.getAttribute('data-target'));
+      navDrawer.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  var navToggle = document.getElementById('navToggle');
+  var navDrawer = document.getElementById('navDrawer');
+  navToggle.addEventListener('click', function(){
+    var isOpen = navDrawer.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  /* -------------------------------------------------------
+     ۴) ظاهر شدن تدریجی هنگام اسکرول (Scroll Reveal)
+  ------------------------------------------------------- */
+  var revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.18 });
+  document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
+
+  /* -------------------------------------------------------
+     ۵) Section 4 — قلب لمسی
+  ------------------------------------------------------- */
+  var touchHeart = document.getElementById('touchHeart');
+  var touchGlow = document.getElementById('touchGlow');
+  var loveLine = document.getElementById('loveLine');
+  var loveMessages = [
+    'دلم برات تنگ شده',
+    'تو قشنگ‌ترین قسمت زندگی منی',
+    'کاش الان کنارم بودی',
+    'یه بغل برای تو بدهکارم',
+    'دوستت دارم نسرینم',
+    'تو دلیل خیلی از لبخندامی',
+    'نمی‌دونی چقدر برام مهمی'
+  ];
+  var lastMsgIndex = -1;
+  touchHeart.addEventListener('click', function(){
+    touchHeart.classList.add('burst');
+    touchGlow.classList.add('show');
+    setTimeout(function(){ touchHeart.classList.remove('burst'); }, 450);
+    setTimeout(function(){ touchGlow.classList.remove('show'); }, 700);
+
+    for (var i = 0; i < 10; i++){
+      var mh = document.createElement('span');
+      mh.className = 'mini-burst-heart';
+      mh.textContent = '❤';
+      var angle = Math.random() * Math.PI * 2;
+      var dist = 60 + Math.random() * 70;
+      mh.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+      mh.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+      mh.style.color = Math.random() < 0.5 ? '#ff7aa8' : '#d6244f';
+      touchHeart.parentElement.appendChild(mh);
+      requestAnimationFrame(function(el){ return function(){ el.classList.add('go'); }; }(mh));
+      setTimeout(function(el){ return function(){ el.remove(); }; }(mh), 1100);
+    }
+
+    var idx;
+    do { idx = Math.floor(Math.random() * loveMessages.length); } while (idx === lastMsgIndex && loveMessages.length > 1);
+    lastMsgIndex = idx;
+    loveLine.classList.remove('show');
+    setTimeout(function(){
+      loveLine.textContent = loveMessages[idx];
+      loveLine.classList.add('show');
+    }, 120);
+  });
+
+  /* -------------------------------------------------------
+     ۶) Section 5 — بازی پیدا کردن قلب
+  ------------------------------------------------------- */
+  var gameGrid = document.getElementById('gameGrid');
+  var gameMsg = document.getElementById('gameMsg');
+  var TOTAL_CELLS = 9;
+  var correctIndex, gameWon = false;
+
+  function buildGame(){
+    gameGrid.innerHTML = '';
+    gameWon = false;
+    gameMsg.textContent = '';
+    gameMsg.classList.remove('win');
+    correctIndex = Math.floor(Math.random() * TOTAL_CELLS);
+    for (var i = 0; i < TOTAL_CELLS; i++){
+      var cell = document.createElement('button');
+      cell.className = 'game-cell';
+      cell.textContent = '♡';
+      cell.setAttribute('aria-label', 'یه قلب');
+      cell.dataset.index = i;
+      cell.addEventListener('click', onCellClick);
+      gameGrid.appendChild(cell);
+    }
+  }
+
+  function onCellClick(e){
+    if (gameWon) return;
+    var cell = e.currentTarget;
+    var idx = Number(cell.dataset.index);
+    if (idx === correctIndex){
+      gameWon = true;
+      cell.classList.add('correct');
+      cell.textContent = '❤';
+      gameMsg.textContent = 'پیداش کردی...\nدرست مثل خودت که قلبمو پیدا کردی.';
+      gameMsg.classList.add('win');
+      celebrateHearts();
+    } else {
+      cell.classList.remove('wrong');
+      void cell.offsetWidth;
+      cell.classList.add('wrong');
+      gameMsg.classList.remove('win');
+      gameMsg.textContent = 'نههه، اون نبود :)';
+    }
+  }
+
+  function celebrateHearts(){
+    for (var i = 0; i < 26; i++){
+      setTimeout(function(){
+        var el = document.createElement('span');
+        el.className = 'p-heart';
+        el.textContent = '❤';
+        var size = 12 + Math.random() * 16;
+        el.style.left = (Math.random() * 100) + 'vw';
+        el.style.fontSize = size + 'px';
+        el.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+        el.style.setProperty('--rot', (Math.random() * 30 - 15) + 'deg');
+        el.style.setProperty('--o', 0.7);
+        el.style.animationDuration = (4 + Math.random() * 3) + 's';
+        field.appendChild(el);
+        setTimeout(function(){ el.remove(); }, 8000);
+      }, i * 60);
+    }
+  }
+  buildGame();
+
+  /* -------------------------------------------------------
+     ۷) Section 6 — کانترهای بی‌نهایت
+  ------------------------------------------------------- */
+  var countObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        var el = entry.target;
+        el.textContent = el.dataset.value;
+        el.classList.add('in');
+        countObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.count-number').forEach(function(el){ countObserver.observe(el); });
+
+  /* -------------------------------------------------------
+     ۸) Section 7 — پاکت نامه
+  ------------------------------------------------------- */
+  var envelope = document.getElementById('envelope');
+  var fullLetter = document.getElementById('fullLetter');
+  function openEnvelope(){
+    if (envelope.classList.contains('open')) return;
+    envelope.classList.add('open');
+    setTimeout(function(){ fullLetter.classList.add('show'); }, 500);
+  }
+  envelope.addEventListener('click', openEnvelope);
+  envelope.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openEnvelope(); }
+  });
+
+  /* -------------------------------------------------------
+     ۹) Section 8 — توالی پایانی
+  ------------------------------------------------------- */
+  var endLine1 = document.getElementById('endLine1');
+  var endLine2 = document.getElementById('endLine2');
+  var endLine3 = document.getElementById('endLine3');
+  var endHeart = document.getElementById('endHeart');
+  var endPlayed = false;
+  var endObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting && !endPlayed){
+        endPlayed = true;
+        endLine1.classList.add('in');
+        setTimeout(function(){ endLine2.classList.add('in'); }, 1300);
+        setTimeout(function(){ endLine3.classList.add('in'); }, 2100);
+        setTimeout(function(){ endHeart.classList.add('in'); }, 2700);
+        endObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+  endObserver.observe(document.getElementById('section8'));
+
+})();
+</script>
+</body>
+</html>
